@@ -1,0 +1,512 @@
+{% extends "predictor/layout.html" %}
+{% load static %}
+{% block title %}About - SkinSight{% endblock %}
+
+{% block content %}
+
+<div class="space-y-10">
+
+  <!-- 1) PROFILE HERO -->
+  <section class="rounded-[2.25rem] border border-black/10 bg-white/80 backdrop-blur shadow-sm overflow-hidden">
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-0">
+      <!-- LEFT -->
+      <div class="lg:col-span-8 p-7 sm:p-10">
+        <div class="inline-flex items-center gap-2 rounded-full border border-black/10 bg-[rgb(var(--skin-100))] px-4 py-2 text-sm font-extrabold text-slate-900">
+          <span class="h-2.5 w-2.5 rounded-full bg-[rgb(var(--skin-300))]"></span>
+          About the creator
+        </div>
+
+        <h1 class="mt-6 text-4xl sm:text-5xl font-black tracking-tight text-slate-900">
+          Sameed Ahmed
+        </h1>
+
+        <p class="mt-4 text-lg sm:text-xl font-semibold text-slate-800 leading-relaxed max-w-2xl">
+          Student at <span class="font-black">LJMU</span> • Creator of <span class="font-black">SkinSight</span>
+        </p>
+
+        <p class="mt-4 text-base sm:text-lg font-semibold text-slate-700 leading-relaxed max-w-2xl">
+          SkinSight is an AI-powered skin condition identifier built to support quick triage,
+          improve accessibility to dermatology insights, and help users understand “what to do next”.
+        </p>
+
+        <p class="mt-4 text-base sm:text-lg font-semibold text-slate-700 leading-relaxed max-w-2xl">
+          I have made this project Public on Github. Use the button below to download it.
+          If you use or refer this project somewhere cite it as <strong>(Sameed LJMU Final Project, 2026)</strong>.
+        </p>
+
+        <div class="mt-7 flex flex-wrap gap-3">
+          <!-- Replace # with your real links -->
+          <a href="https://www.github.com/xameedius/SkinSight"
+             class="inline-flex items-center justify-center rounded-2xl border border-black/10 bg-white px-6 py-3 text-base font-extrabold text-slate-900 hover:bg-black/5 transition"
+             target="_blank">
+            GitHub
+          </a>
+          <a href="https://www.linkedin.com/in/sameed-/"
+             class="inline-flex items-center justify-center rounded-2xl border border-black/10 bg-white px-6 py-3 text-base font-extrabold text-slate-900 hover:bg-black/5 transition"
+             target="_blank">
+            LinkedIn
+          </a>
+
+          <span class="inline-flex items-center rounded-2xl bg-slate-900 px-6 py-3 text-base font-extrabold text-white shadow-sm">
+            BSCS Final Project
+          </span>
+        </div>
+      </div>
+
+      <!-- RIGHT: IMAGE SLOT -->
+      <div class="lg:col-span-4 border-t lg:border-t-0 lg:border-l border-black/10 bg-[rgb(var(--skin-50))] p-7 sm:p-10">
+        <div class="mt-5 rounded-3xl border border-dashed border-black/15 bg-white/70 p-4">
+          <img
+            src="{% static 'predictor/me.jpeg' %}"
+            alt="Sameed Ahmed"
+            class="w-full h-auto rounded-2xl border border-black/10 bg-white object-cover"
+            onerror="this.style.display='none'; this.nextElementSibling.style.display='block';"
+          />
+          <div style="display:none" class="rounded-2xl bg-white p-10 text-center border border-black/10">
+            <div class="text-base font-extrabold text-slate-900">Image placeholder</div>
+            <div class="mt-2 text-sm font-semibold text-slate-700">
+              Put an image at <span class="font-black">static/predictor/me.png</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="h-1.5 w-full bg-gradient-to-r from-[rgb(var(--skin-200))] via-[rgb(var(--skin-100))] to-[rgb(var(--skin-200))]"></div>
+  </section>
+
+
+  <!-- 2) TECHNICAL SPECIFICATION -->
+
+  <section class="mt-16 sm:mt-20 lg:mt-24 rounded-[2.25rem] border border-black/10 bg-white shadow-sm p-7 sm:p-10">
+    
+    <div class="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4">
+      <div>
+        <h2 class="text-3xl font-black tracking-tight text-slate-900">Technical specification</h2>
+        <p class="mt-2 text-base sm:text-lg font-semibold text-slate-700">
+          Key project choices across data, ML, and engineering.
+        </p>
+      </div>
+      <span class="inline-flex items-center rounded-full border border-black/10 bg-[rgb(var(--skin-100))] px-4 py-2 text-sm font-extrabold text-slate-900">
+        Django + PyTorch + timm
+      </span>
+    </div>
+
+    <div class="mt-7 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+      <!-- Dataset -->
+      <div class="rounded-3xl border border-black/10 bg-[rgb(var(--skin-50))] p-6">
+        <div class="text-sm font-extrabold text-slate-700">Dataset</div>
+        <div class="mt-2 text-xl font-black text-slate-900">Kaggle Dermnet Dataset</div>
+        <p class="mt-2 text-sm font-semibold text-slate-700 leading-relaxed">
+          by <span class="font-black">Shubham Goel & Bill Hall</span>.
+        </p>
+      </div>
+
+      <!-- Training Images -->
+      <div class="rounded-3xl border border-black/10 bg-[rgb(var(--skin-50))] p-6">
+        <div class="text-sm font-extrabold text-slate-700">Training images</div>
+        <div class="mt-2 text-xl font-black text-slate-900">Trained On</div>
+        <p class="mt-2 text-sm font-semibold text-slate-700 leading-relaxed">
+          15,500+ images
+        </p>
+      </div>
+
+      <!-- Base Model -->
+      <div class="rounded-3xl border border-black/10 bg-[rgb(var(--skin-50))] p-6">
+        <div class="text-sm font-extrabold text-slate-700">Base model</div>
+        <div class="mt-2 text-xl font-black text-slate-900">EfficientNetV2-S</div>
+        <p class="mt-2 text-sm font-semibold text-slate-700 leading-relaxed">
+          Fast baseline using <span class="font-black">timm</span> pretrained weights.
+        </p>
+      </div>
+
+      <!-- Design -->
+      <div class="rounded-3xl border border-black/10 bg-[rgb(var(--skin-50))] p-6">
+        <div class="text-sm font-extrabold text-slate-700">Design</div>
+        <div class="mt-2 text-xl font-black text-slate-900">Tailwind (CDN)</div>
+        <p class="mt-2 text-sm font-semibold text-slate-700 leading-relaxed">
+          Modern UI with strong readability skin themed
+        </p>
+      </div>
+
+      <!-- Frontend -->
+      <div class="rounded-3xl border border-black/10 bg-[rgb(var(--skin-50))] p-6">
+        <div class="text-sm font-extrabold text-slate-700">Frontend</div>
+        <div class="mt-2 text-xl font-black text-slate-900">HTML, CSS, JS</div>
+        <p class="mt-2 text-sm font-semibold text-slate-700 leading-relaxed">
+          Django templating language 
+        </p>
+      </div>
+
+      <!-- Backend -->
+      <div class="rounded-3xl border border-black/10 bg-[rgb(var(--skin-50))] p-6">
+        <div class="text-sm font-extrabold text-slate-700">Backend</div>
+        <div class="mt-2 text-xl font-black text-slate-900">Django</div>
+        <p class="mt-2 text-sm font-semibold text-slate-700 leading-relaxed">
+          User accounts + private history + CSV export + model inference.
+        </p>
+      </div>
+
+      <!-- Database -->
+      <div class="rounded-3xl border border-black/10 bg-[rgb(var(--skin-50))] p-6">
+        <div class="text-sm font-extrabold text-slate-700">Database</div>
+        <div class="mt-2 text-xl font-black text-slate-900">PostgreSQL</div>
+        <p class="mt-2 text-sm font-semibold text-slate-700 leading-relaxed">
+          SQLite3 was used during development and was later migrated to PostgreSQL for Deployment.
+        </p>
+      </div>
+
+      <!-- Deployment -->
+      <div class="rounded-3xl border border-black/10 bg-[rgb(var(--skin-50))] p-6">
+        <div class="text-sm font-extrabold text-slate-700">Deployment</div>
+        <div class="mt-2 text-xl font-black text-slate-900">Render</div>
+        <p class="mt-2 text-sm font-semibold text-slate-700 leading-relaxed">
+          Django Skinsight Web-App was Deployed using render.
+        </p>
+      </div>
+
+      <!-- Domain & DNS Management -->
+      <div class="rounded-3xl border border-black/10 bg-[rgb(var(--skin-50))] p-6">
+        <div class="text-sm font-extrabold text-slate-700">Domain & DNS Management</div>
+        <div class="mt-2 text-xl font-black text-slate-900">Namecheap</div>
+        <p class="mt-2 text-sm font-semibold text-slate-700 leading-relaxed">
+          The domain skinsight.online was registered at Namecheap.
+        </p>
+      </div>
+    </div>
+    </div>
+  </section>
+
+  <!-- SECTION: Training Process -->
+  <section class="mt-10 sm:mt-12 lg:mt-24 rounded-[2.25rem] border border-black/10 bg-white shadow-sm p-7 sm:p-10">
+    <div class="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4">
+      <div>
+        <h2 class="text-3xl font-black tracking-tight text-slate-900">
+          Model Training Process
+        </h2>
+        <p class="mt-2 text-base sm:text-lg font-semibold text-slate-700">
+          How the SkinSight AI model was trained and fine-tuned for 23 skin condition categories.
+        </p>
+      </div>
+
+      <span class="inline-flex items-center rounded-full border border-black/10 bg-[rgb(var(--skin-100))] px-4 py-2 text-sm font-extrabold text-slate-900">
+        Transfer learning + GPU training
+      </span>
+    </div>
+
+    <!-- Cards -->
+    <div class="mt-8 grid grid-cols-1 lg:grid-cols-2 gap-6">
+
+      <!-- Data -->
+      <div class="rounded-3xl border border-black/10 bg-[rgb(var(--skin-50))] p-6">
+        <h3 class="text-xl font-black text-slate-900">1️⃣ Dataset Preparation</h3>
+        <ul class="mt-4 space-y-2 text-sm font-semibold text-slate-700 leading-relaxed">
+          <li>🔹 Images organized by class using <b>ImageFolder format</b>.</li>
+          <li>🔹 <b>23 disease categories</b> stored in <code>class_names.json</code>.</li>
+          <li>🔹 Data split into <b>training, validation, and test</b> sets.</li>
+          <li>🔹 Images resized to match model input resolution.</li>
+        </ul>
+      </div>
+
+      <!-- Preprocessing -->
+      <div class="rounded-3xl border border-black/10 bg-[rgb(var(--skin-50))] p-6">
+        <h3 class="text-xl font-black text-slate-900">2️⃣ Preprocessing & Augmentation</h3>
+        <ul class="mt-4 space-y-2 text-sm font-semibold text-slate-700 leading-relaxed">
+          <li>🔹 Resize to <b>320×320</b> to capture fine skin texture.</li>
+          <li>🔹 Training augmentations: flips, color adjustments, MixUp & CutMix.</li>
+          <li>🔹 ImageNet normalization for pretrained model compatibility.</li>
+          <li>🔹 Validation/test use only resize + normalization.</li>
+        </ul>
+      </div>
+
+      <!-- Model -->
+      <div class="rounded-3xl border border-black/10 bg-[rgb(var(--skin-50))] p-6">
+        <h3 class="text-xl font-black text-slate-900">3️⃣ Model Architecture</h3>
+        <ul class="mt-4 space-y-2 text-sm font-semibold text-slate-700 leading-relaxed">
+          <li>🔹 <b>EfficientNetV2-S</b> from the <code>timm</code> library.</li>
+          <li>🔹 Initialized with <b>pretrained ImageNet weights</b>.</li>
+          <li>🔹 Final classification layer adapted for <b>23 classes</b>.</li>
+          <li>🔹 Trained using <b>GPU acceleration</b> for deeper fine-tuning.</li>
+        </ul>
+      </div>
+
+      <!-- Training -->
+      <div class="rounded-3xl border border-black/10 bg-[rgb(var(--skin-50))] p-6">
+        <h3 class="text-xl font-black text-slate-900">4️⃣ Fine-tuning & Optimization</h3>
+        <ul class="mt-4 space-y-2 text-sm font-semibold text-slate-700 leading-relaxed">
+          <li>🔹 Two-stage training: <b>freeze backbone → full fine-tuning</b>.</li>
+          <li>🔹 Loss: SoftTargetCrossEntropy (supports MixUp training).</li>
+          <li>🔹 Optimizer: <b>AdamW</b> with cosine learning-rate scheduling.</li>
+          <li>🔹 Best model saved to <code>artifacts/skinsight_model.pt</code>.</li>
+        </ul>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- 3) CONFUSION MATRIX + JUSTIFICATION -->
+  <section class="mt-16 sm:mt-20 lg:mt-24 grid grid-cols-1 lg:grid-cols-12 gap-6">
+    <!-- Confusion matrix -->
+    <div class="lg:col-span-7">
+      <div class="rounded-[2.25rem] border border-black/10 bg-white shadow-sm p-7 sm:p-10 h-full">
+        <div class="flex items-center justify-between gap-4">
+          <h2 class="text-3xl font-black tracking-tight text-slate-900">Confusion matrix</h2>
+          <span class="inline-flex items-center rounded-full border border-black/10 bg-[rgb(var(--skin-100))] px-4 py-2 text-sm font-extrabold text-slate-900">
+            Model evaluation
+          </span>
+        </div>
+
+        <p class="mt-2 text-base sm:text-lg font-semibold text-slate-700">
+          A table showing how many times each true class was predicted as each class (correct vs misclassified counts).
+        </p>
+
+        <div class="mt-6 rounded-3xl border border-dashed border-black/15 bg-[rgb(var(--skin-50))] p-4">
+          <img
+            src="{% static 'predictor/confusion_matrix.png' %}"
+            alt="Confusion matrix"
+            class="w-full h-64 sm:h-72 lg:h-80 object-contain rounded-2xl border border-black/10 bg-white"
+            onerror="this.style.display='none'; this.nextElementSibling.style.display='block';"
+          />
+          <div style="display:none" class="rounded-2xl bg-white p-10 text-center border border-black/10">
+            <div class="text-base font-extrabold text-slate-900">Matrix placeholder</div>
+            <div class="mt-2 text-sm font-semibold text-slate-700">
+              matrix image at
+              <span class="font-black">static/predictor/confusion_matrix.png</span>
+            </div>
+          </div>
+        </div>
+        <div class="mt-5 rounded-3xl border border-black/10 bg-white p-5">
+          <div class="text-sm font-extrabold text-slate-900">Normalized Confusion Matrix</div>
+          <p class="mt-2 text-sm font-semibold text-slate-700 leading-relaxed">
+            The same table but converted to percentages, showing the proportion of predictions for each class instead of raw counts.
+          </p>
+        </div>
+        <div class="mt-6 rounded-3xl border border-dashed border-black/15 bg-[rgb(var(--skin-50))] p-4">
+          <img
+            src="{% static 'predictor/confusion_matrix_norm.png' %}"
+            alt="Confusion matrix"
+            class="w-full h-64 sm:h-72 lg:h-80 object-contain rounded-2xl border border-black/10 bg-white"
+            onerror="this.style.display='none'; this.nextElementSibling.style.display='block';"
+          />
+          <div style="display:none" class="rounded-2xl bg-white p-10 text-center border border-black/10">
+            <div class="text-base font-extrabold text-slate-900">Matrix placeholder</div>
+            <div class="mt-2 text-sm font-semibold text-slate-700">
+              Put your exported matrix image at
+              <span class="font-black">static/predictor/confusion_matrix.png</span>
+            </div>
+          </div>
+        </div>
+
+
+      </div>
+    </div>
+
+  <!-- Justification -->
+  <div class="lg:col-span-5">
+    <div class="rounded-[2.25rem] border border-black/10 bg-white shadow-sm p-7 sm:p-10 h-full">
+      <h2 class="text-3xl font-black tracking-tight text-slate-900">Justification</h2>
+      <p class="mt-2 text-base sm:text-lg font-semibold text-slate-700">
+        Why these technical choices were made.
+      </p>
+
+      <div class="mt-6 space-y-4">
+
+        <div class="rounded-3xl border border-black/10 bg-[rgb(var(--skin-50))] p-5">
+          <div class="text-base font-black text-slate-900">Advanced architecture</div>
+          <p class="mt-2 text-sm font-semibold text-slate-700 leading-relaxed">
+            EfficientNetV2-S provides strong accuracy while remaining computationally efficient,
+            making it well suited for multi-class dermatological image classification.
+          </p>
+        </div>
+
+        <div class="rounded-3xl border border-black/10 bg-[rgb(var(--skin-50))] p-5">
+          <div class="text-base font-black text-slate-900">High-resolution learning</div>
+          <p class="mt-2 text-sm font-semibold text-slate-700 leading-relaxed">
+            Larger input images help capture fine skin texture and lesion details,
+            which are critical for distinguishing visually similar conditions.
+          </p>
+        </div>
+
+        <div class="rounded-3xl border border-black/10 bg-[rgb(var(--skin-50))] p-5">
+          <div class="text-base font-black text-slate-900">Transfer learning + fine-tuning</div>
+          <p class="mt-2 text-sm font-semibold text-slate-700 leading-relaxed">
+            Starting from pretrained ImageNet weights and progressively fine-tuning the network
+            improves performance on limited medical data and stabilizes training.
+          </p>
+        </div>
+
+        <div class="rounded-3xl border border-black/10 bg-[rgb(var(--skin-50))] p-5">
+          <div class="text-base font-black text-slate-900">GPU-accelerated training</div>
+          <p class="mt-2 text-sm font-semibold text-slate-700 leading-relaxed">
+            GPU training enables higher-resolution images and deeper optimization,
+            significantly improving model learning compared to CPU-only training.
+          </p>
+        </div>
+
+        <div class="rounded-3xl border border-black/10 bg-[rgb(var(--skin-50))] p-5">
+          <div class="text-base font-black text-slate-900">User-focused results</div>
+          <p class="mt-2 text-sm font-semibold text-slate-700 leading-relaxed">
+            Clinical-style outputs such as urgency level, guidance, and red-flag indicators
+            make predictions easier to interpret for non-experts.
+          </p>
+        </div>
+        <div class="mt-5 rounded-3xl border border-black/10 bg-white p-5">
+          <div class="text-sm font-extrabold text-slate-900">For More Information</div>
+          <p class="mt-2 text-sm font-semibold text-slate-700 leading-relaxed">
+            Check the final project report submitted on Canvis.
+          </p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+  </section>
+
+
+  <!-- 4) FUTURE VISION (diagram-style) -->
+<section class="mt-16 sm:mt-20 lg:mt-24 rounded-[2.25rem] border border-black/10 bg-white p-7 shadow-sm sm:p-10">
+  <!-- Header -->
+  <div class="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
+    <div>
+      <h2 class="text-3xl font-black tracking-tight text-slate-900">Future vision</h2>
+      <p class="mt-2 text-base font-semibold text-slate-700 sm:text-lg">
+        Where SkinSight could go next.
+      </p>
+    </div>
+
+    <span class="inline-flex w-fit items-center gap-2 rounded-full border border-black/10 bg-[rgb(var(--skin-100))] px-4 py-2 text-sm font-extrabold text-slate-900">
+      <span class="h-2 w-2 rounded-full bg-slate-900/70"></span>
+      Roadmap
+    </span>
+  </div>
+
+  <!-- Content -->
+  <div class="mt-8 rounded-3xl border border-black/10 bg-[rgb(var(--skin-50))] p-6 sm:p-8">
+    <!-- Stepper -->
+    <ol class="grid gap-4 lg:grid-cols-2">
+      <li class="rounded-3xl border border-black/10 bg-white p-5 shadow-sm">
+        <div class="flex items-start gap-3">
+          <span
+            class="mt-0.5 inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-2xl border border-black/10 bg-[rgb(var(--skin-100))] text-sm font-black text-slate-900"
+          >
+            1
+          </span>
+          <div>
+            <div class="text-base font-black text-slate-900">Better data + balancing</div>
+            <p class="mt-1 text-sm font-semibold leading-relaxed text-slate-700">
+              More diverse images, class balancing, and cleaner labels.
+            </p>
+          </div>
+        </div>
+      </li>
+
+      <li class="rounded-3xl border border-black/10 bg-white p-5 shadow-sm">
+        <div class="flex items-start gap-3">
+          <span
+            class="mt-0.5 inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-2xl border border-black/10 bg-[rgb(var(--skin-100))] text-sm font-black text-slate-900"
+          >
+            2
+          </span>
+          <div>
+            <div class="text-base font-black text-slate-900">Stronger evaluation + training</div>
+            <p class="mt-1 text-sm font-semibold leading-relaxed text-slate-700">
+              Top-k accuracy, calibration, and per-class performance dashboards. Training on powerful GPUs to improve accuracy.
+            </p>
+          </div>
+        </div>
+      </li>
+    </ol>
+
+    <!-- Feature cards -->
+    <div class="mt-6 grid grid-cols-1 gap-4 lg:grid-cols-3">
+      <div class="rounded-3xl border border-black/10 bg-white p-5 shadow-sm">
+        <div class="flex items-center justify-between gap-3">
+          <div class="flex items-center gap-3">
+            <span
+              class="inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-2xl border border-black/10 bg-[rgb(var(--skin-100))] text-sm font-black text-slate-900"
+            >
+              3
+            </span>
+            <div class="text-base font-black text-slate-900">Mobile-first UX</div>
+          </div>
+
+          <span class="rounded-full border border-black/10 bg-slate-50 px-2.5 py-1 text-xs font-extrabold text-slate-700">
+            UX
+          </span>
+        </div>
+
+        <p class="mt-2 text-sm font-semibold leading-relaxed text-slate-700">
+          Guided capture + a better camera flow.
+        </p>
+      </div>
+
+      <div class="rounded-3xl border border-black/10 bg-white p-5 shadow-sm">
+        <div class="flex items-center justify-between gap-3">
+          <div class="flex items-center gap-3">
+            <span
+              class="inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-2xl border border-black/10 bg-[rgb(var(--skin-100))] text-sm font-black text-slate-900"
+            >
+              4
+            </span>
+            <div class="text-base font-black text-slate-900">Progress tracking</div>
+          </div>
+
+          <span class="rounded-full border border-black/10 bg-slate-50 px-2.5 py-1 text-xs font-extrabold text-slate-700">
+            Habit
+          </span>
+        </div>
+
+        <p class="mt-2 text-sm font-semibold leading-relaxed text-slate-700">
+          Timeline view + reminders to re-scan.
+        </p>
+      </div>
+
+      <div class="rounded-3xl border border-black/10 bg-white p-5 shadow-sm">
+        <div class="flex items-center justify-between gap-3">
+          <div class="flex items-center gap-3">
+            <span
+              class="inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-2xl border border-black/10 bg-[rgb(var(--skin-100))] text-sm font-black text-slate-900"
+            >
+              5
+            </span>
+            <div class="text-base font-black text-slate-900">Clinician mode</div>
+          </div>
+
+          <span class="rounded-full border border-black/10 bg-slate-50 px-2.5 py-1 text-xs font-extrabold text-slate-700">
+            Pro
+          </span>
+        </div>
+
+        <p class="mt-2 text-sm font-semibold leading-relaxed text-slate-700">
+          Export reports + structured notes.
+        </p>
+      </div>
+    </div>
+
+    <!-- Final goal -->
+    <div class="mt-6 rounded-3xl border border-black/10 bg-white p-6">
+      <div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+        <div class="flex items-center gap-3">
+          <span
+            class="inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-2xl border border-black/10 bg-[rgb(var(--skin-100))] text-sm font-black text-slate-900"
+          >
+            6
+          </span>
+          <div class="text-sm font-extrabold text-slate-900">Final goal</div>
+        </div>
+
+        <span class="inline-flex w-fit items-center rounded-full border border-black/10 bg-[rgb(var(--skin-100))] px-3 py-1 text-xs font-extrabold text-slate-900">
+          Responsible AI
+        </span>
+      </div>
+
+      <p class="mt-3 text-sm font-semibold leading-relaxed text-slate-700">
+        A responsible, explainable assistant that helps users decide whether to self-care or seek professional medical advice.
+      </p>
+    </div>
+  </div>
+</section>
+
+</div>
+
+{% endblock %}
