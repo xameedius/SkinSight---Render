@@ -9,5 +9,10 @@ urlpatterns = [
     path("", include("predictor.urls")),
 ]
 
+
+
 if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+else:
+    # Render prod: still serve media through Django (works, but not ideal for large scale)
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
