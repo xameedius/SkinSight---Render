@@ -1,7 +1,7 @@
 import tempfile
 from gradio_client import Client, handle_file
 
-# ✅ change this to your actual Space ID
+
 SPACE_ID = "xameedius/skinsight-space"
 
 _client = None
