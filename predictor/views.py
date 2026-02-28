@@ -11,7 +11,7 @@ from django.core.files.base import ContentFile
 from .models import Prediction
 from .forms import SkinImageForm, SignUpForm, LoginForm
 from .recommendations import get_recommendation_rich
-from .space_infer import predict_upload  # ✅ NEW (Space inference)
+from .space_infer import predict_upload  
 
 from PIL import Image
 from pathlib import Path
