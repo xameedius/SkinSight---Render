@@ -2,6 +2,9 @@ import os
 from pathlib import Path
 
 import dj_database_url
+from dotenv import load_dotenv
+
+load_dotenv()
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -10,7 +13,6 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # =========================
 
 SECRET_KEY = os.environ.get("SECRET_KEY", "dev-only-change-me")
-
 DEBUG = os.environ.get("DEBUG", "1") == "1"
 
 ALLOWED_HOSTS = [
@@ -29,6 +31,24 @@ if os.environ.get("CSRF_TRUSTED_ORIGINS"):
     ]
 
 # =========================
+# Cloudinary (optional)
+# =========================
+# Keep local dev simple: if Cloudinary env vars are NOT set, we use local FileSystemStorage.
+# On Render: set CLOUDINARY_CLOUD_NAME, CLOUDINARY_API_KEY, CLOUDINARY_API_SECRET.
+
+USE_CLOUDINARY = all(
+    os.environ.get(k)
+    for k in ("CLOUDINARY_CLOUD_NAME", "CLOUDINARY_API_KEY", "CLOUDINARY_API_SECRET")
+)
+
+if USE_CLOUDINARY:
+    CLOUDINARY_STORAGE = {
+        "CLOUD_NAME": os.environ.get("CLOUDINARY_CLOUD_NAME"),
+        "API_KEY": os.environ.get("CLOUDINARY_API_KEY"),
+        "API_SECRET": os.environ.get("CLOUDINARY_API_SECRET"),
+    }
+
+# =========================
 # Applications
 # =========================
 
@@ -39,8 +59,13 @@ INSTALLED_APPS = [
     "django.contrib.contenttypes",
     "django.contrib.sessions",
     "django.contrib.messages",
-    "django.contrib.staticfiles",
 ]
+
+# Add Cloudinary apps only when configured (so local works without installing/configuring it)
+if USE_CLOUDINARY:
+    INSTALLED_APPS += ["cloudinary", "cloudinary_storage"]
+
+INSTALLED_APPS += ["django.contrib.staticfiles"]
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
@@ -125,24 +150,35 @@ USE_TZ = True
 
 STATIC_URL = "/static/"
 STATIC_ROOT = BASE_DIR / "staticfiles"
-
 STATICFILES_DIRS = [BASE_DIR / "static"] if (BASE_DIR / "static").exists() else []
 
 MEDIA_URL = "/media/"
 MEDIA_ROOT = BASE_DIR / "media"
 
 # ✅ IMPORTANT: define BOTH 'default' and 'staticfiles'
-STORAGES = {
-    "default": {
-        "BACKEND": "django.core.files.storage.FileSystemStorage",
-        "OPTIONS": {
-            "location": str(MEDIA_ROOT),
+# - Local (no Cloudinary env vars): store uploads in MEDIA_ROOT
+# - Render (Cloudinary env vars set): store uploads on Cloudinary
+if USE_CLOUDINARY:
+    STORAGES = {
+        "default": {
+            "BACKEND": "cloudinary_storage.storage.MediaCloudinaryStorage",
         },
-    },
-    "staticfiles": {
-        "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
-    },
-}
+        "staticfiles": {
+            "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
+        },
+    }
+else:
+    STORAGES = {
+        "default": {
+            "BACKEND": "django.core.files.storage.FileSystemStorage",
+            "OPTIONS": {
+                "location": str(MEDIA_ROOT),
+            },
+        },
+        "staticfiles": {
+            "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
+        },
+    }
 
 # =========================
 # Default PK
