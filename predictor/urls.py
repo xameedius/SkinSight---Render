@@ -10,10 +10,12 @@ from .views import (
     overview,
     about,
     export_result_csv,
+    healthz,
 )
 
 urlpatterns = [
     path("", overview, name="overview"),  
+    path("healthz", healthz),
     path("scan/", home, name="home"),      
     path("about/", about, name="about"),
 

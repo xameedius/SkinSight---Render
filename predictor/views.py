@@ -24,6 +24,8 @@ import uuid
 import json
 import csv
 
+def healthz(request):
+    return JsonResponse({"ok": True})
 
 def overview(request):
     class_names = []
