@@ -137,8 +137,14 @@
          class="group rounded-3xl border border-black/10 bg-white p-5 shadow-sm hover:shadow-xl hover:-translate-y-0.5 transition">
 
         <div class="relative">
-          <img src="{{ p.image.url }}" alt="scan"
-               class="h-48 w-full rounded-3xl border border-black/10 object-cover" />
+          {% if p.image_url %}
+            <img src="{{ p.image_url }}" alt="scan"
+                class="h-48 w-full rounded-3xl border border-black/10 object-cover" />
+          {% else %}
+            <div class="h-48 w-full rounded-3xl border border-black/10 bg-[rgb(var(--skin-50))] flex items-center justify-center text-base font-semibold text-slate-700">
+              No image available
+            </div>
+          {% endif %}
 
           <!-- Urgency badge overlay -->
           <div class="absolute left-4 top-4 flex gap-2">

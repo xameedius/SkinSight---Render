@@ -1,6 +1,7 @@
 from django.db import models
 from django.conf import settings
 
+
 class Prediction(models.Model):
     user = models.ForeignKey(
         settings.AUTH_USER_MODEL,
@@ -9,19 +10,21 @@ class Prediction(models.Model):
         null=True,
         blank=True,
     )
-    
-    image = models.ImageField(upload_to="uploads/%Y/%m/%d/")
+
+    # ✅ Store the uploaded image URL on Cloudinary (no storage backend needed)
+    image_url = models.URLField(blank=True, null=True)
+
     label = models.CharField(max_length=200)
     confidence = models.FloatField()
     top3_json = models.JSONField(null=True, blank=True)
 
-    # Rich recommendations (NEW)
+    # Rich recommendations
     urgency = models.CharField(max_length=10, default="monitor")  # urgent|soon|monitor
     contagious = models.BooleanField(default=False)
     see_doctor = models.BooleanField(default=False)
     recommendation = models.TextField(blank=True, default="")
-    self_care_json = models.JSONField(null=True, blank=True)     # list[str]
-    red_flags_json = models.JSONField(null=True, blank=True)     # list[str]
+    self_care_json = models.JSONField(null=True, blank=True)  # list[str]
+    red_flags_json = models.JSONField(null=True, blank=True)  # list[str]
 
     created_at = models.DateTimeField(auto_now_add=True)
 

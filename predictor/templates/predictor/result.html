@@ -96,11 +96,17 @@
       Best results come from bright lighting and sharp focus.
     </p>
 
-    <img
-      src="{{ pred.image.url }}"
-      alt="Uploaded skin image"
-      class="mt-5 w-full rounded-3xl border border-black/10 object-cover"
-    />
+{% if pred.image_url %}
+  <img
+    src="{{ pred.image_url }}"
+    alt="Uploaded skin image"
+    class="mt-5 w-full rounded-3xl border border-black/10 object-cover"
+  />
+{% else %}
+  <div class="mt-5 rounded-3xl border border-black/10 bg-[rgb(var(--skin-50))] p-6 text-base font-semibold text-slate-700">
+    No uploaded image available for this scan.
+  </div>
+{% endif %}
   </div>
 
   <!-- Confidence + Quick Insights (fills the empty space nicely) -->

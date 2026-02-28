@@ -13,6 +13,10 @@ from .forms import SkinImageForm, SignUpForm, LoginForm
 from .recommendations import get_recommendation_rich
 from .space_infer import predict_upload  
 
+import cloudinary
+import cloudinary.uploader
+import os
+
 from PIL import Image
 from pathlib import Path
 import base64
@@ -36,6 +40,37 @@ def overview(request):
 
 def about(request):
     return render(request, "predictor/about.html")
+
+def _upload_to_cloudinary(django_file) -> str:
+    """
+    Uploads a Django UploadedFile/ContentFile to Cloudinary and returns secure_url.
+    """
+    cloud_name = os.environ.get("CLOUDINARY_CLOUD_NAME")
+    api_key = os.environ.get("CLOUDINARY_API_KEY")
+    api_secret = os.environ.get("CLOUDINARY_API_SECRET")
+
+    if not (cloud_name and api_key and api_secret):
+        raise RuntimeError("Cloudinary env vars not set (CLOUDINARY_CLOUD_NAME/API_KEY/API_SECRET).")
+
+    cloudinary.config(
+        cloud_name=cloud_name,
+        api_key=api_key,
+        api_secret=api_secret,
+        secure=True,
+    )
+
+    # Ensure we start from the beginning of the file
+    try:
+        django_file.seek(0)
+    except Exception:
+        pass
+
+    res = cloudinary.uploader.upload(
+        django_file,
+        folder="skinsight/uploads",
+        resource_type="image",
+    )
+    return res["secure_url"]
 
 
 @login_required
@@ -63,10 +98,10 @@ def home(request):
                 filename = f"webcam_{uuid.uuid4().hex}.jpg"
                 img_file = ContentFile(raw, name=filename)
 
-            # Validate it's an image (good UX; also catches broken uploads early)
+            # Validate it's an image
             try:
                 Image.open(img_file).convert("RGB")
-                img_file.seek(0)  # IMPORTANT: reset pointer before sending to Space
+                img_file.seek(0)  # reset pointer
             except Exception:
                 return render(request, "predictor/home.html", {
                     "form": form,
@@ -87,16 +122,15 @@ def home(request):
             label = best.get("label", "unknown")
             confidence = float(best.get("score", 0.0))
 
-            # Your DB expects "top3_json" and your CSV export expects key 'p' sometimes.
-            # We store BOTH score and p for compatibility.
             top3 = []
             if isinstance(preds, list):
                 for item in preds[:3]:
                     try:
+                        s = float(item.get("score", 0.0))
                         top3.append({
                             "label": item.get("label", ""),
-                            "score": float(item.get("score", 0.0)),
-                            "p": float(item.get("score", 0.0)),
+                            "score": s,
+                            "p": s,  # keep compat with your CSV exporter
                         })
                     except Exception:
                         top3.append({"label": str(item), "score": 0.0, "p": 0.0})
@@ -109,15 +143,23 @@ def home(request):
 
             rec = get_recommendation_rich(result["label"], result["confidence"])
 
-            # IMPORTANT: reset pointer again before saving into ImageField
+            # ✅ Upload to Cloudinary and store URL
             try:
                 img_file.seek(0)
             except Exception:
                 pass
 
+            try:
+                image_url = _upload_to_cloudinary(img_file)
+            except Exception as e:
+                return render(request, "predictor/home.html", {
+                    "form": form,
+                    "error": f"Cloudinary upload failed: {type(e).__name__}: {e!r}"
+                })
+
             pred = Prediction.objects.create(
                 user=request.user,
-                image=img_file,
+                image_url=image_url,  # ✅ NEW
                 label=result["label"],
                 confidence=result["confidence"],
                 top3_json=result.get("top3", None),
@@ -193,15 +235,14 @@ def export_result_csv(request, pred_id):
     writer.writerow(["Label", "Probability"])
     for item in (pred.top3_json or []):
         try:
-            # Support both {"p": ...} and {"score": ...}
             p = item.get("p", item.get("score", 0))
             writer.writerow([item.get("label", ""), f"{float(p):.6f}"])
         except Exception:
             writer.writerow([str(item), ""])
     writer.writerow([])
 
-    # Image URL
-    writer.writerow(["Image URL", pred.image.url if pred.image else ""])
+    # ✅ Cloudinary URL
+    writer.writerow(["Image URL", pred.image_url or ""])
 
     return response
 
@@ -294,7 +335,6 @@ def export_history_csv(request):
     for p in qs.iterator():
         self_care = " | ".join(p.self_care_json or [])
         red_flags = " | ".join(p.red_flags_json or [])
-        image_url = p.image.url if p.image else ""
 
         writer.writerow([
             p.id,
@@ -307,11 +347,10 @@ def export_history_csv(request):
             (p.recommendation or "").replace("\n", " ").strip(),
             self_care,
             red_flags,
-            image_url,
+            p.image_url or "",  # ✅ Cloudinary URL
         ])
 
     return response
-
 
 def signup(request):
     if request.method == "POST":
