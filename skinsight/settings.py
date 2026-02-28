@@ -155,6 +155,10 @@ STATICFILES_DIRS = [BASE_DIR / "static"] if (BASE_DIR / "static").exists() else 
 MEDIA_URL = "/media/"
 MEDIA_ROOT = BASE_DIR / "media"
 
+# ✅ Needed because django-cloudinary-storage's collectstatic integration
+# still checks STATICFILES_STORAGE (even if you're using STORAGES).
+STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
+
 # ✅ IMPORTANT: define BOTH 'default' and 'staticfiles'
 # - Local (no Cloudinary env vars): store uploads in MEDIA_ROOT
 # - Render (Cloudinary env vars set): store uploads on Cloudinary
